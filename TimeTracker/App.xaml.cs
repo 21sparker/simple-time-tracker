@@ -13,6 +13,9 @@ namespace TimeTracker
     /// </summary>
     public partial class App : Application
     {
+        static string databaseName = "TimeTracker.db";
+        static string folderPath = AppDomain.CurrentDomain.BaseDirectory;
+        public static string databasePath = System.IO.Path.Combine(folderPath, databaseName);
 
         protected override void OnStartup(StartupEventArgs e)
         {
