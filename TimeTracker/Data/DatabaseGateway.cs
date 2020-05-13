@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Dapper;
 
-namespace TimeTracker.Data
+namespace TimeTracker
 {
     public class DatabaseGateway
     {
