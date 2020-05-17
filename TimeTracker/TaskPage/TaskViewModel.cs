@@ -10,13 +10,13 @@ namespace TimeTracker
     {
         private DatabaseGateway _databaseGateway;
 
-        public TaskViewModel(Task task, DatabaseGateway databaseGateway)
+        public TaskViewModel(TaskItem task, DatabaseGateway databaseGateway)
         {
             TaskItem = task;
             _databaseGateway = databaseGateway;
         }
 
-        public Task TaskItem { get; private set; }
+        public TaskItem TaskItem { get; private set; }
 
         public string Description
         {

@@ -2,7 +2,7 @@
 
 namespace TimeTracker
 {
-    public class Task
+    public class TaskItem
     {
         [Key]
         public int TaskId { get; set; }

@@ -22,8 +22,8 @@ namespace TimeTracker
 
             // Loads active tasks
             TaskViewModels = new ObservableCollection<TaskViewModel>();
-            List<Task> tasks = _dbGateway.LoadTasks();
-            foreach (Task task in tasks)
+            List<TaskItem> tasks = _dbGateway.LoadTasks();
+            foreach (TaskItem task in tasks)
             {
                 TaskViewModels.Add(new TaskViewModel(task, _dbGateway));
             }
@@ -58,7 +58,7 @@ namespace TimeTracker
         public void AddTask()
         {
             string taskDescription = _taskToAdd;
-            // Task Field is empty
+            //TaskItemField is empty
             if (taskDescription == null)
             {
                 return;
@@ -66,14 +66,14 @@ namespace TimeTracker
 
             // TODO: Check for field that is just full of spaces
 
-            // Task Description is not already uses, case-insensitive
+            //TaskItemDescription is not already uses, case-insensitive
             if (TaskViewModels.Any(t => t.Description.Equals(taskDescription, StringComparison.CurrentCultureIgnoreCase)))
             {
                 return;
             }
 
             // Insert new task to database
-            Task newTask = _dbGateway.InsertNewTask(taskDescription, Utilities.ConvertToUnixTime(DateTime.Now));
+           TaskItem newTask = _dbGateway.InsertNewTask(taskDescription, Utilities.ConvertToUnixTime(DateTime.Now));
 
             // Update collection
             TaskViewModels.Add(new TaskViewModel(newTask, _dbGateway));
@@ -102,5 +102,28 @@ namespace TimeTracker
             // Remove task from collection
             TaskViewModels.Remove(task);
         }
+
+
+
+        private TaskViewModel _trackedTask;
+        private ICommand _trackTaskCommand;
+        public ICommand TrackTaskCommand
+        {
+            get
+            {
+                if (_trackTaskCommand == null)
+                {
+                    _trackTaskCommand = new RelayCommand(t => TrackTask((TaskViewModel)t));
+                }
+
+                return _trackTaskCommand;
+            }
+        }
+
+        public async void TrackTask(TaskViewModel taskVM)
+        {
+            return;
+        }
+
     }
 }

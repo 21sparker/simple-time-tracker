@@ -20,7 +20,7 @@ namespace TimeTracker
             _DBConnection.Close();
         }
 
-        public List<Task> LoadTasks(bool activeTasksOnly = true)
+        public List<TaskItem> LoadTasks(bool activeTasksOnly = true)
         {
             string sql =
                 "SELECT * FROM Task LEFT JOIN " +
@@ -33,10 +33,10 @@ namespace TimeTracker
                 sql += " WHERE Task.DeletedDateTime IS NULL";
             }
                 
-            return _DBConnection.Query<Task>(sql).AsList();
+            return _DBConnection.Query<TaskItem>(sql).AsList();
         }
 
-        public Task InsertNewTask(string description, long createdDateTime)
+        public TaskItem InsertNewTask(string description, long createdDateTime)
         {
             string sql = "INSERT INTO Task (Description, CreatedDateTime) VALUES (@Description, @CreatedDateTime)";
             _DBConnection.Execute(sql, new { Description = description, CreatedDateTime = createdDateTime });
@@ -48,10 +48,10 @@ namespace TimeTracker
                 "ON Task.TaskId = TH.TaskId " +
                 "WHERE Task.Description = @Description AND CreatedDateTime = @CreatedDateTime";
 
-            return _DBConnection.QueryFirst<Task>(sql, new { Description = description, CreatedDateTime = createdDateTime });
+            return _DBConnection.QueryFirst<TaskItem>(sql, new { Description = description, CreatedDateTime = createdDateTime });
         }
 
-        public void DeleteTask(Task task)
+        public void DeleteTask(TaskItem task)
         {
             string sql = "UPDATE Task SET DeletedDateTime = @DeletedDateTime WHERE TaskId = @TaskId";
             long deletedDateTime = Utilities.ConvertToUnixTime(DateTime.Now);
@@ -63,7 +63,7 @@ namespace TimeTracker
         /// Note, that the task parameter should have the updated properties already.
         /// </summary>
         /// <param name="task"></param>
-        public void UpdateTask(Task task)
+        public void UpdateTask(TaskItem task)
         {
             string sql = "UPDATE Task SET Description = @Description WHERE TaskId = @TaskId";
             _DBConnection.Execute(sql, new { Description = task.Description, TaskId = task.TaskId });
