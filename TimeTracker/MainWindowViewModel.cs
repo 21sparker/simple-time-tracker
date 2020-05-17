@@ -35,7 +35,7 @@ namespace TimeTracker
             _DBGateway = new DatabaseGateway($"Data Source={App.databasePath};");
 
             // Add available pages
-            PageViewModels.Add(new TaskViewModel(_DBGateway));
+            PageViewModels.Add(new TaskPageViewModel(_DBGateway));
 
             // Set starting page
             CurrentPageViewModel = PageViewModels[0];

@@ -18,9 +18,9 @@ namespace TimeTracker
     /// <summary>
     /// Interaction logic for TaskView.xaml
     /// </summary>
-    public partial class TaskView : UserControl
+    public partial class TaskPageView : UserControl
     {
-        public TaskView()
+        public TaskPageView()
         {
             InitializeComponent();
         }

@@ -9,14 +9,14 @@ using System.Windows.Input;
 
 namespace TimeTracker
 {
-    public class TaskViewModel : ObservableObject, IPageViewModel
+    public class TaskPageViewModel : ObservableObject, IPageViewModel
     {
         public string Name { get { return "Tasks"; } }
 
         private DatabaseGateway _dbGateway;
         public ObservableCollection<Task> Tasks { get; set; }
 
-        public TaskViewModel(DatabaseGateway dbGateway)
+        public TaskPageViewModel(DatabaseGateway dbGateway)
         {
             _dbGateway = dbGateway;
 
@@ -97,6 +97,5 @@ namespace TimeTracker
             // Remove task from collection
             Tasks.Remove(task);
         }
-
     }
 }

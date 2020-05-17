@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="750">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type local:TaskViewModel}">
-            <local:TaskView/>
+        <DataTemplate DataType="{x:Type local:TaskPageViewModel}">
+            <local:TaskPageView/>
         </DataTemplate>
     </Window.Resources>
     <ContentControl Content="{Binding CurrentPageViewModel}"/>
