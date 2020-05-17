@@ -68,5 +68,18 @@ namespace TimeTracker
             string sql = "UPDATE Task SET Description = @Description WHERE TaskId = @TaskId";
             _DBConnection.Execute(sql, new { Description = task.Description, TaskId = task.TaskId });
         }
+
+        
+        public void InsertNewTaskHistoryItem(int taskId, long dateTracked, long secondsTracked)
+        {
+            string sql = "INSERT INTO TaskHistory (DateTracked, TaskId, SecondsTracked)" +
+                         " VALUES (@DateTracked, @TaskId, @SecondsTracked)";
+            _DBConnection.Execute(sql, new
+            {
+                DateTracked = dateTracked,
+                TaskId = taskId,
+                SecondsTracked = secondsTracked
+            });
+        }
     }
 }
