@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dapper;
+using Dapper.Contrib;
 
 namespace TimeTracker
 {
@@ -22,7 +23,7 @@ namespace TimeTracker
         public List<Task> LoadTasks(bool activeTasksOnly = true)
         {
             string sql =
-                "SELECT * FROM Task JOIN " +
+                "SELECT * FROM Task LEFT JOIN " +
                 "(SELECT DateTracked, TaskId, SUM(SecondsTracked) AS SecondsTracked FROM TaskHistory " +
                 "GROUP BY DateTracked, TaskId) AS TH " +
                 "ON Task.TaskId = TH.TaskId";
@@ -33,6 +34,21 @@ namespace TimeTracker
             }
                 
             return _DBConnection.Query<Task>(sql).AsList();
+        }
+
+        public Task InsertNewTask(string description, long createdDateTime)
+        {
+            string sql = "INSERT INTO Task (Description, CreatedDateTime) VALUES (@Description, @CreatedDateTime)";
+            _DBConnection.Execute(sql, new { Description = description, CreatedDateTime = createdDateTime });
+
+            sql =
+                "SELECT * FROM Task LEFT JOIN " +
+                "(SELECT DateTracked, TaskId, SUM(SecondsTracked) AS SecondsTracked FROM TaskHistory " +
+                "GROUP BY DateTracked, TaskId) AS TH " +
+                "ON Task.TaskId = TH.TaskId " +
+                "WHERE Task.Description = @Description AND CreatedDateTime = @CreatedDateTime";
+
+            return _DBConnection.QueryFirst<Task>(sql, new { Description = description, CreatedDateTime = createdDateTime });
         }
     }
 }
