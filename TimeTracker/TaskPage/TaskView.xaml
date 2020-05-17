@@ -19,11 +19,12 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="10 0 0 0">Task:</TextBlock>
-            <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10 0 0 0"/>
-            <Button Grid.Column="3" Margin="10 0 0 0">Add Task</Button>
+            <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10 0 0 0" Text="{Binding TaskToAdd}"/>
+            <Button Grid.Column="3" Margin="10 0 0 0" Command="{Binding AddTaskCommand}">Add Task</Button>
         </Grid>
 
-        <DataGrid Grid.Row="1" Margin="25 10" CanUserResizeColumns="False">
+        <DataGrid Grid.Row="1" Margin="25 10" CanUserResizeColumns="False" ItemsSource="{Binding Tasks}"
+                  AutoGenerateColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Delete" Width="70">
                     <DataGridTemplateColumn.CellTemplate>
@@ -32,8 +33,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Task" Width="*"/>
-                <DataGridTextColumn Header="Hours" Width="100" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Task" Width="*" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Hours" Width="100" IsReadOnly="True" Binding="{Binding SecondsTracked}"/>
                 <DataGridTemplateColumn Header="Play" Width="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
