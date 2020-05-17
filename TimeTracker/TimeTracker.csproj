@@ -73,6 +73,7 @@
       <DependentUpon>TaskPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TaskPage\TaskPageViewModel.cs" />
+    <Compile Include="TaskPage\TaskViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
