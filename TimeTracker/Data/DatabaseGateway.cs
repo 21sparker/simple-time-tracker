@@ -57,5 +57,16 @@ namespace TimeTracker
             long deletedDateTime = Utilities.ConvertToUnixTime(DateTime.Now);
             _DBConnection.Execute(sql, new { DeletedDateTime=deletedDateTime, TaskId=task.TaskId });
         }
+
+        /// <summary>
+        /// Updates a tasks attributes.
+        /// Note, that the task parameter should have the updated properties already.
+        /// </summary>
+        /// <param name="task"></param>
+        public void UpdateTask(Task task)
+        {
+            string sql = "UPDATE Task SET Description = @Description WHERE TaskId = @TaskId";
+            _DBConnection.Execute(sql, new { Description = task.Description, TaskId = task.TaskId });
+        }
     }
 }
