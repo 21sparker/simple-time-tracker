@@ -19,28 +19,20 @@ namespace TimeTracker
             _DBConnection.Close();
         }
 
-        public List<Task> LoadTasks()
-        {
-            return LoadTasks(ConvertToUnixTime(DateTime.Today));
-        }
-
-        public List<Task> LoadTasks(long dateTracked)
+        public List<Task> LoadTasks(bool activeTasksOnly = true)
         {
             string sql =
                 "SELECT * FROM Task JOIN " +
                 "(SELECT DateTracked, TaskId, SUM(SecondsTracked) AS SecondsTracked FROM TaskHistory " +
                 "GROUP BY DateTracked, TaskId) AS TH " +
-                "ON Task.TaskId = TH.TaskId " +
-                "WHERE Task.DeletedDateTime IS NULL AND TH.DateTracked = @DateTracked;";
-            return _DBConnection.Query<Task>(sql, new { DateTracked = dateTracked }).AsList();
-        }
+                "ON Task.TaskId = TH.TaskId";
 
-
-        private static long ConvertToUnixTime(DateTime datetime)
-        {
-            DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-            return (long)(datetime - sTime).TotalSeconds;
+            if (activeTasksOnly)
+            {
+                sql += " WHERE Task.DeletedDateTime IS NULL";
+            }
+                
+            return _DBConnection.Query<Task>(sql).AsList();
         }
     }
 }
