@@ -43,7 +43,6 @@ namespace TimeTracker
             {
                 if (_addTaskCommand == null)
                 {
-                    Trace.WriteLine("Added Command");
                     _addTaskCommand = new RelayCommand(t => AddTask());
                 }
 
@@ -53,7 +52,6 @@ namespace TimeTracker
 
         public void AddTask()
         {
-            Trace.WriteLine("Function ran");
             string taskDescription = _taskToAdd;
             // Task Field is empty
             if (taskDescription == null)
@@ -74,6 +72,30 @@ namespace TimeTracker
 
             // Update collection
             Tasks.Add(newTask);
+        }
+
+
+        private ICommand _deleteTaskCommand;
+        public ICommand DeleteTaskCommand
+        {
+            get
+            {
+                if (_deleteTaskCommand == null)
+                {
+                    _deleteTaskCommand = new RelayCommand(t => DeleteTask((Task)t));
+                }
+
+                return _deleteTaskCommand;
+            }
+        }
+
+        public void DeleteTask(Task task)
+        {
+            // Delete task from database
+            _dbGateway.DeleteTask(task);
+
+            // Remove task from collection
+            Tasks.Remove(task);
         }
 
     }

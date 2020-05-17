@@ -50,5 +50,12 @@ namespace TimeTracker
 
             return _DBConnection.QueryFirst<Task>(sql, new { Description = description, CreatedDateTime = createdDateTime });
         }
+
+        public void DeleteTask(Task task)
+        {
+            string sql = "UPDATE Task SET DeletedDateTime = @DeletedDateTime WHERE TaskId = @TaskId";
+            long deletedDateTime = Utilities.ConvertToUnixTime(DateTime.Now);
+            _DBConnection.Execute(sql, new { DeletedDateTime=deletedDateTime, TaskId=task.TaskId });
+        }
     }
 }
