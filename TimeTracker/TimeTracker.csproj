@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="TaskPage\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
     </Compile>
