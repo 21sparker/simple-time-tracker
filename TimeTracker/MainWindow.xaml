@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:TimeTracker"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:TaskViewModel}">
+            <local:TaskView/>
+        </DataTemplate>
+    </Window.Resources>
+    <ContentControl Content="{Binding CurrentPageViewModel}"/>
 </Window>
