@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:TimeTracker"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="750">
+    <UserControl.Resources>
+        <local:DateConverter x:Key="DateConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -39,7 +42,8 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Task" Width="*" Binding="{Binding Description}"/>
-                <DataGridTextColumn Header="Hours" Width="100" IsReadOnly="True" Binding="{Binding SecondsTracked}"/>
+                <DataGridTextColumn Header="Time" Width="200" IsReadOnly="True"
+                                    Binding="{Binding SecondsTracked, Converter={StaticResource DateConverter}}"/>
                 <DataGridTemplateColumn Header="Play" Width="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
