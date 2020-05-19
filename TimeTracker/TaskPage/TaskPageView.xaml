@@ -43,7 +43,13 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Task" Width="*" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Time" Width="200" IsReadOnly="True"
-                                    Binding="{Binding SecondsTracked, Converter={StaticResource DateConverter}}"/>
+                                    Binding="{Binding SecondsTracked, Converter={StaticResource DateConverter}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTemplateColumn Header="Play" Width="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
