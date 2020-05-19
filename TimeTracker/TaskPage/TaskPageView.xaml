@@ -41,7 +41,13 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Task" Width="*" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Task" Width="*" Binding="{Binding Description}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="Time" Width="200" IsReadOnly="True"
                                     Binding="{Binding SecondsTracked, Converter={StaticResource DateConverter}}">
                     <DataGridTextColumn.ElementStyle>
@@ -82,6 +88,12 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Height" Value="40"/>
+                </Style>
+
+            </DataGrid.RowStyle>
         </DataGrid>
     </Grid>
 </UserControl>
