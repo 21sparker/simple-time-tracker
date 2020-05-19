@@ -34,7 +34,7 @@ namespace TimeTracker
 
         public long? SecondsTracked
         {
-            get { return TaskItem.SecondsTracked; }
+            get { return TaskItem.SecondsTracked ?? 0; }
             set
             {
                 TaskItem.SecondsTracked = value;

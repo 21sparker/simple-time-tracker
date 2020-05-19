@@ -43,7 +43,10 @@
                 <DataGridTemplateColumn Header="Play" Width="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button>Play</Button>
+                            <Button Command="{
+                                    Binding Path=DataContext.TrackTaskCommand,
+                                    RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding }">Play</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

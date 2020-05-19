@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -104,8 +105,6 @@ namespace TimeTracker
         }
 
 
-
-        private TaskViewModel _trackedTask;
         private ICommand _trackTaskCommand;
         public ICommand TrackTaskCommand
         {
@@ -120,9 +119,65 @@ namespace TimeTracker
             }
         }
 
-        public async void TrackTask(TaskViewModel taskVM)
+
+        private Task<bool> _pendingTask = null;
+        private CancellationTokenSource _cts = null;
+        private TaskViewModel _trackedTask;
+        private int _trackedSeconds = 0;
+
+
+        // TODO: Refactor these async functions
+        public async void TrackTask(TaskViewModel task)
         {
-            return;
+            // If _trackedTask is null then the user is stopping the timer
+            if (_trackedTask != null)
+            {
+                _cts.Cancel();
+                return;
+            }
+
+            _trackedTask = task;
+
+            try 
+            { 
+                await TrackTaskAsync(); 
+            } catch 
+            {
+                _trackedTask.AddTrackedTime(_trackedSeconds);
+                _trackedTask = null;
+                _trackedSeconds = 0;
+            }
+        }
+
+        public async Task<bool> TrackTaskAsync()
+        {
+            CancellationTokenSource previousCts = _cts;
+            _cts = new CancellationTokenSource();
+
+            if (previousCts != null)
+            {
+                // cancel the previous session and wait for its termination
+                previousCts.Cancel();
+                try { await _pendingTask;  } catch { }
+            }
+
+            _cts.Token.ThrowIfCancellationRequested();
+            this._pendingTask = TrackTaskHelper(_cts.Token);
+
+            return await _pendingTask;
+        }
+
+        private async Task<bool> TrackTaskHelper(CancellationToken token)
+        {
+            bool doMore = true;
+            while(doMore)
+            {
+                token.ThrowIfCancellationRequested();
+                await Task.Delay(1000);
+                _trackedSeconds += 1;
+                Trace.WriteLine(_trackedSeconds);
+            }
+            return doMore;
         }
 
     }
