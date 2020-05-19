@@ -78,6 +78,9 @@ namespace TimeTracker
 
             // Update collection
             TaskViewModels.Add(new TaskViewModel(newTask, _dbGateway));
+
+            // Clear user input
+            TaskToAdd = "";
         }
 
 
