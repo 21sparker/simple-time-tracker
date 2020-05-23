@@ -77,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FocusExtension\FocusExtension.cs" />
     <Compile Include="Helpers\DateConverter.cs" />
     <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="TaskPage\TaskPageView.xaml.cs">

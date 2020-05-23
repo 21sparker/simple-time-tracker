@@ -42,6 +42,41 @@ namespace TimeTracker
             }
         }
 
+        private bool _isTaskToAddFocused;
+        public bool IsTaskToAddFocused
+        {
+            get { return _isTaskToAddFocused; }
+            set
+            {
+                Trace.WriteLine("Setting value" + value);
+                if(_isTaskToAddFocused == value)
+                {
+                    _isTaskToAddFocused = false;
+                    OnPropertyChanged("IsTaskToAddFocused");
+                }
+
+                _isTaskToAddFocused = value;
+                OnPropertyChanged("IsTaskToAddFocused");
+            }
+        }
+
+        private ICommand _focusTaskToAdd;
+        public ICommand FocusTaskToAdd
+        {
+            get
+            {
+                if (_focusTaskToAdd == null)
+                {
+                    _focusTaskToAdd = new RelayCommand(t => {
+                        Trace.WriteLine("Ran key");
+                        IsTaskToAddFocused = true;
+                    });
+                }
+
+                return _focusTaskToAdd;
+            }
+        }
+
 
         private ICommand _addTaskCommand;
         public ICommand AddTaskCommand
