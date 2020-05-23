@@ -58,15 +58,18 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTemplateColumn Header="Play" Width="70">
+                <DataGridTemplateColumn Width="40">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Style="{StaticResource MaterialDesignIconButton}" ToolTip="Start Tracking"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"
                                     Command="{
                                     Binding Path=DataContext.TrackTaskCommand,
                                     RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                    CommandParameter="{Binding }">
-                                <materialDesign:PackIcon Kind="Play"/>
+                                    CommandParameter="{Binding }"
+                                    Height="30" Width="30">
+                                <materialDesign:PackIcon Kind="Play" HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -97,7 +100,6 @@
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Height" Value="40"/>
                 </Style>
-
             </DataGrid.RowStyle>
         </DataGrid>
     </Grid>
