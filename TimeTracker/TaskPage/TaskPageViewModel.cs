@@ -37,6 +37,7 @@ namespace TimeTracker
             set
             {
                 _taskToAdd = value;
+                Trace.WriteLine(value);
                 OnPropertyChanged("TaskToAdd");
             }
         }

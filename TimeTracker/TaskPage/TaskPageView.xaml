@@ -23,7 +23,12 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="10 0 0 0">Task:</TextBlock>
-            <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10 0 0 0" Text="{Binding TaskToAdd}"/>
+            <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10 0 0 0" Text="{Binding TaskToAdd, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding AddTaskCommand}"/>
+                    <KeyBinding Key="Enter" Command="{Binding AddTaskCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
             <Button Grid.Column="3" Margin="10 0 0 0" Command="{Binding AddTaskCommand}">Add Task</Button>
         </Grid>
         <DataGrid Grid.Row="1" Margin="25 10" CanUserResizeColumns="False" ItemsSource="{Binding TaskViewModels}"
