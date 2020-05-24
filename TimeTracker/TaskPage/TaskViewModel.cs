@@ -12,22 +12,22 @@ namespace TimeTracker
 
         public TaskViewModel(TaskItem task, DatabaseGateway databaseGateway)
         {
-            TaskItem = task;
+            MainTask = task;
             _databaseGateway = databaseGateway;
             _secondsTracked = task.SecondsTracked;
         }
 
-        public TaskItem TaskItem { get; private set; }
+        public TaskItem MainTask { get; private set; }
 
         public string Description
         {
-            get { return TaskItem.Description; }
+            get { return MainTask.Description; }
             set
             {
                 if (!String.IsNullOrWhiteSpace(value))
                 {
-                    TaskItem.Description = value;
-                    _databaseGateway.UpdateTask(TaskItem);
+                    MainTask.Description = value;
+                    _databaseGateway.UpdateTask(MainTask);
                     OnPropertyChanged("Description");
                 }
             }
@@ -58,9 +58,23 @@ namespace TimeTracker
         public void AddTrackedTime(long seconds)
         {
             long dateTracked = Utilities.ConvertToUnixTime(DateTime.Today);
-            _databaseGateway.InsertNewTaskHistoryItem(TaskItem.TaskId, dateTracked, seconds);
+            _databaseGateway.InsertNewTaskHistoryItem(MainTask.TaskId, dateTracked, seconds);
         }
 
-
+        private WBSViewModel _wbsVM;
+        public WBSViewModel WBSVM
+        {
+            get { return _wbsVM; }
+            set
+            {
+                if (value != null)
+                {
+                    _wbsVM = value;
+                    MainTask.WBSId = _wbsVM.WBSItem.WBSId;
+                    _databaseGateway.UpdateTask(MainTask);
+                    OnPropertyChanged("WBSVM");
+                }
+            }
+        }
     }
 }

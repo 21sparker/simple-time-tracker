@@ -20,22 +20,20 @@
         </Grid.RowDefinitions>
         <Grid Margin="20" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10 0 0 0" 
+            <TextBox Grid.Column="0" VerticalAlignment="Center" Margin="10 0 0 0" 
                      Text="{Binding TaskToAdd, UpdateSourceTrigger=PropertyChanged}"
                      local:FocusExtension.IsFocused="{Binding IsTaskToAddFocused}"
                      materialDesign:HintAssist.Hint="Enter new task">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding AddTaskCommand}"/>
-                    <KeyBinding Key="Enter" Command="{Binding AddTaskCommand}"/>
+                    <KeyBinding Key="Return" Command="{Binding AddTaskCommand}"/>
                 </TextBox.InputBindings>
                 
             </TextBox>
-            <Button Grid.Column="3" Margin="10 0 0 0" Command="{Binding AddTaskCommand}">Add Task</Button>
+            <Button Grid.Column="1" Margin="10 0 0 0" Command="{Binding AddTaskCommand}">Add Task</Button>
         </Grid>
         <DataGrid Grid.Row="1" Margin="25 10" CanUserResizeColumns="False" ItemsSource="{Binding TaskViewModels}"
                   AutoGenerateColumns="False" CanUserAddRows="False">
@@ -76,6 +74,19 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <materialDesign:DataGridComboBoxColumn Width="150" Header="WBS Code" IsEditable="True"
+                                                       SelectedValueBinding="{Binding WBSVM}" DisplayMemberPath="Name"
+                                                       ItemsSourceBinding="{
+                                                       Binding RelativeSource={RelativeSource FindAncestor, 
+                                                       AncestorType={x:Type DataGrid}}, Path=DataContext.WBSViewModels}">
+                    <!--Setting the editing element style allows access to all of the combo box's properties
+                          <materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
+                              <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >
+                                  <Setter Property="IsEditable" Value="True" />
+                              </Style>
+                          </materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
+                          -->
+                </materialDesign:DataGridComboBoxColumn>
                 <DataGridTemplateColumn Width="40">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

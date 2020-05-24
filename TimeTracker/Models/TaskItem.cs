@@ -12,7 +12,12 @@ namespace TimeTracker
         public long CreatedDateTime { get; set; }
 
         public long? DeletedDateTime { get; set; }
-        
+
+        public int? WBSId { get; set; }
+
+        [Computed]
+        public WBS WBSCode { get; set; }
+
         [Computed]
         public long? DateTracked { get; set; }
 

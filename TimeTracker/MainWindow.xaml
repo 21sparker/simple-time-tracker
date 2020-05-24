@@ -16,6 +16,41 @@
         <DataTemplate DataType="{x:Type local:TaskPageViewModel}">
             <local:TaskPageView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type local:WBSPageViewModel}">
+            <local:WBSPageView/>
+        </DataTemplate>
     </Window.Resources>
-    <ContentControl Content="{Binding CurrentPageViewModel}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone
+            Mode="PrimaryLight" Padding="16" Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" Grid.Column="0"
+                           HorizontalAlignment="Center" Foreground="White" FontSize="24">
+                    Time Tracker
+                </TextBlock>
+                <Button Margin="5" Content="Test" Grid.Column="1" Cursor="Hand"
+                        Command="{Binding ChangePageByNameCommand }">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock FontStyle="Italic" Text="{Binding HiddenPageName, StringFormat='Manage {0}'}"/>
+                                <materialDesign:PackIcon Kind="ArrowRight"/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </materialDesign:ColorZone>
+        <ContentControl  Grid.Row="1" Content="{Binding CurrentPageViewModel}"/>
+    </Grid>
+
+
 </Window>

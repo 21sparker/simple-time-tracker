@@ -80,11 +80,17 @@
     <Compile Include="FocusExtension\FocusExtension.cs" />
     <Compile Include="Helpers\DateConverter.cs" />
     <Compile Include="Helpers\Utilities.cs" />
+    <Compile Include="Models\WBS.cs" />
     <Compile Include="TaskPage\TaskPageView.xaml.cs">
       <DependentUpon>TaskPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TaskPage\TaskPageViewModel.cs" />
     <Compile Include="TaskPage\TaskViewModel.cs" />
+    <Compile Include="WBSPage\WBSPageView.xaml.cs">
+      <DependentUpon>WBSPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WBSPage\WBSPageViewModel.cs" />
+    <Compile Include="WBSPage\WBSViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,6 +108,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="TaskPage\TaskPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WBSPage\WBSPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -16,18 +16,23 @@ namespace TimeTracker
 
         private DatabaseGateway _dbGateway;
         public ObservableCollection<TaskViewModel> TaskViewModels { get; set; }
+        public ObservableCollection<WBSViewModel> WBSViewModels { get; set; }
 
-        public TaskPageViewModel(DatabaseGateway dbGateway)
+        public TaskPageViewModel(DatabaseGateway dbGateway, ObservableCollection<TaskViewModel> taskVMs,
+            ObservableCollection<WBSViewModel> wbsVMs)
         {
             _dbGateway = dbGateway;
 
             // Loads active tasks
-            TaskViewModels = new ObservableCollection<TaskViewModel>();
-            List<TaskItem> tasks = _dbGateway.LoadTasks();
-            foreach (TaskItem task in tasks)
-            {
-                TaskViewModels.Add(new TaskViewModel(task, _dbGateway));
-            }
+            //TaskViewModels = new ObservableCollection<TaskViewModel>();
+            //List<TaskItem> tasks = _dbGateway.TaskItems;
+            //foreach (TaskItem task in tasks)
+            //{
+            //    TaskViewModels.Add(new TaskViewModel(task, _dbGateway));
+            //}
+
+            TaskViewModels = taskVMs;
+            WBSViewModels = wbsVMs;
         }
 
         private string _taskToAdd;
@@ -136,7 +141,7 @@ namespace TimeTracker
         public void DeleteTask(TaskViewModel task)
         {
             // Delete task from database
-            _dbGateway.DeleteTask(task.TaskItem);
+            _dbGateway.DeleteTask(task.MainTask);
 
             // Remove task from collection
             TaskViewModels.Remove(task);
