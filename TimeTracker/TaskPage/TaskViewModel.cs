@@ -42,6 +42,17 @@ namespace TimeTracker
             }
         }
 
+        private bool _isTracking;
+        public bool IsTracking
+        {
+            get { return _isTracking; }
+            set
+            {
+                _isTracking = value;
+                OnPropertyChanged("IsTracking");
+            }
+        }
+
         public void AddTrackedTime(long seconds)
         {
             long dateTracked = Utilities.ConvertToUnixTime(DateTime.Today);

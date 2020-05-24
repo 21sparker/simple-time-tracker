@@ -158,24 +158,45 @@ namespace TimeTracker
             }
         }
 
+        private bool _isTracking;
+        public bool IsTracking
+        {
+            get { return _isTracking; }
+            set
+            {
+                _isTracking = value;
+                OnPropertyChanged("IsTracking");
+            }
+        }
 
         private Task<bool> _pendingTask = null;
         private CancellationTokenSource _cts = null;
-        private TaskViewModel _trackedTask;
         private int _trackedSeconds = 0;
 
+        private TaskViewModel _trackedTask;
 
         // TODO: Refactor these async functions
         public async void TrackTask(TaskViewModel task)
         {
-            // If _trackedTask is null then the user is stopping the timer
+            // If _trackedTask is not null then the user is stopping the timer
             if (_trackedTask != null)
             {
-                _cts.Cancel();
-                return;
+                // Ignore if clicked task is not what is currently tracked
+                if (_trackedTask != task)
+                {
+                    return;
+                }
+                else
+                {
+                    _cts.Cancel();
+                    return;
+                }
+
             }
 
             _trackedTask = task;
+            _trackedTask.IsTracking = true;
+            IsTracking = true;
 
             try 
             { 
@@ -183,8 +204,10 @@ namespace TimeTracker
             } catch 
             {
                 _trackedTask.AddTrackedTime(_trackedSeconds);
+                _trackedTask.IsTracking = false;
                 _trackedTask = null;
                 _trackedSeconds = 0;
+                IsTracking = false;
             }
         }
 

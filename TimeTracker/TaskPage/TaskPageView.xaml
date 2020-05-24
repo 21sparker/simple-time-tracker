@@ -79,15 +79,43 @@
                 <DataGridTemplateColumn Width="40">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource MaterialDesignIconButton}" ToolTip="Start Tracking"
+                            <Button ToolTip="Start Tracking"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"
                                     Command="{
                                     Binding Path=DataContext.TrackTaskCommand,
                                     RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                     CommandParameter="{Binding }"
                                     Height="30" Width="30">
-                                <materialDesign:PackIcon Kind="Play" HorizontalAlignment="Center"
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <materialDesign:PackIcon Kind="Play" HorizontalAlignment="Center"
                                                          VerticalAlignment="Center"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Opacity" Value="1"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=DataContext.IsTracking,
+                                                               RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                               Value="true"/>
+                                                    <Condition Binding="{Binding Path=IsTracking}" Value="false"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Opacity" Value="0.3"/>
+                                            </MultiDataTrigger>
+                                            <DataTrigger Binding="{Binding Path=IsTracking}" Value="true">
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <materialDesign:PackIcon Kind="StopCircleOutline" HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
