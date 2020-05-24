@@ -68,7 +68,6 @@ namespace TimeTracker
                 if (_focusTaskToAdd == null)
                 {
                     _focusTaskToAdd = new RelayCommand(t => {
-                        Trace.WriteLine("Ran key");
                         IsTaskToAddFocused = true;
                     });
                 }
@@ -237,7 +236,7 @@ namespace TimeTracker
                 token.ThrowIfCancellationRequested();
                 await Task.Delay(1000);
                 _trackedSeconds += 1;
-                Trace.WriteLine(_trackedSeconds);
+                _trackedTask.SecondsTracked += 1;
             }
             return doMore;
         }

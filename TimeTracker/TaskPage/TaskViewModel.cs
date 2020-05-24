@@ -14,6 +14,7 @@ namespace TimeTracker
         {
             TaskItem = task;
             _databaseGateway = databaseGateway;
+            _secondsTracked = task.SecondsTracked;
         }
 
         public TaskItem TaskItem { get; private set; }
@@ -32,12 +33,13 @@ namespace TimeTracker
             }
         }
 
+        private long? _secondsTracked;
         public long? SecondsTracked
         {
-            get { return TaskItem.SecondsTracked ?? 0; }
+            get { return _secondsTracked ?? 0; }
             set
             {
-                TaskItem.SecondsTracked = value;
+                _secondsTracked = value;
                 OnPropertyChanged("SecondsTracked");
             }
         }
@@ -57,7 +59,6 @@ namespace TimeTracker
         {
             long dateTracked = Utilities.ConvertToUnixTime(DateTime.Today);
             _databaseGateway.InsertNewTaskHistoryItem(TaskItem.TaskId, dateTracked, seconds);
-            SecondsTracked += seconds;
         }
 
 
