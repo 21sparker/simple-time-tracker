@@ -25,14 +25,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="10 0 0 0">Task:</TextBlock>
             <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10 0 0 0" 
                      Text="{Binding TaskToAdd, UpdateSourceTrigger=PropertyChanged}"
-                     local:FocusExtension.IsFocused="{Binding IsTaskToAddFocused}">
+                     local:FocusExtension.IsFocused="{Binding IsTaskToAddFocused}"
+                     materialDesign:HintAssist.Hint="Enter new task">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding AddTaskCommand}"/>
                     <KeyBinding Key="Enter" Command="{Binding AddTaskCommand}"/>
                 </TextBox.InputBindings>
+                
             </TextBox>
             <Button Grid.Column="3" Margin="10 0 0 0" Command="{Binding AddTaskCommand}">Add Task</Button>
         </Grid>
