@@ -96,7 +96,7 @@ namespace TimeTracker
         {
             string taskDescription = _taskToAdd;
             //TaskItemField is empty
-            if (taskDescription == null | taskDescription.Replace(" ", String.Empty) == "")
+            if (taskDescription == null || taskDescription.Replace(" ", String.Empty) == "")
             {
                 return;
             }
