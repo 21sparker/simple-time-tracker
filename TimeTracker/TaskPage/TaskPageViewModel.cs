@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TimeTracker.TaskPage.DialogBox;
 
 namespace TimeTracker
 {
@@ -147,6 +149,57 @@ namespace TimeTracker
             TaskViewModels.Remove(task);
         }
 
+
+        private ICommand _executeTimeDialogCommand;
+        public ICommand ExecuteTimeDialogCommand
+        {
+            get
+            {
+                if (_executeTimeDialogCommand == null)
+                {
+                    _executeTimeDialogCommand = new RelayCommand(t => ExecuteTimeDialog((TaskViewModel)t));
+                }
+
+                return _executeTimeDialogCommand;
+            }
+        }
+
+        private async void ExecuteTimeDialog(TaskViewModel task)
+        {
+            // set up time dialog
+            TimeDialogView view = new TimeDialogView
+            {
+                DataContext = new TimeDialogViewModel()
+            };
+
+            // show the dialog
+            var result = await DialogHost.Show(view, "RootDialog");
+
+            bool selectedOk = (bool)result;
+
+            if (selectedOk)
+            {
+                long totalSeconds = 0;
+
+                int minutes;
+                if (Int32.TryParse(((TimeDialogViewModel)view.DataContext).Minutes, out minutes))
+                {
+                    totalSeconds += (long)(minutes * 60);
+                }
+
+                int hours;
+                if (Int32.TryParse(((TimeDialogViewModel)view.DataContext).Hours, out hours))
+                {
+                    totalSeconds += (long)(hours * 60 * 60);
+                }
+
+                if (totalSeconds > 0)
+                {
+                    task.AddTrackedTime(totalSeconds);
+                    task.SecondsTracked += totalSeconds;
+                }
+            }
+        }
 
         private ICommand _trackTaskCommand;
         public ICommand TrackTaskCommand

@@ -13,6 +13,7 @@
     <UserControl.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding FocusTaskToAdd}" />
     </UserControl.InputBindings>
+    <materialDesign:DialogHost Identifier="RootDialog">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -90,6 +91,50 @@
                 <DataGridTemplateColumn Width="40">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
+                            <Button ToolTip="Add Time"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"
+                                    Command="{
+                                    Binding Path=DataContext.ExecuteTimeDialogCommand,
+                                    RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding }"
+                                    Height="30" Width="30">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <materialDesign:PackIcon Kind="PlusCircle" HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Opacity" Value="1"/>
+                                        <!--<Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=DataContext.IsTracking,
+                                                               RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                               Value="true"/>
+                                                    <Condition Binding="{Binding Path=IsTracking}" Value="false"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Opacity" Value="0.3"/>
+                                            </MultiDataTrigger>
+                                            <DataTrigger Binding="{Binding Path=IsTracking}" Value="true">
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <materialDesign:PackIcon Kind="StopCircleOutline" HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>-->
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="40">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <Button ToolTip="Start Tracking"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"
                                     Command="{
@@ -131,6 +176,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
             </DataGrid.Columns>
             <DataGrid.CellStyle>
                 <Style TargetType="{x:Type DataGridCell}">
@@ -160,4 +206,5 @@
             </DataGrid.RowStyle>
         </DataGrid>
     </Grid>
+    </materialDesign:DialogHost>
 </UserControl>
