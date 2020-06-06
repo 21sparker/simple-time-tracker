@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TimeTracker"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="750" d:DesignWidth="750">
+             d:DesignHeight="690" d:DesignWidth="680">
     <UserControl.Resources>
         <local:DateConverter x:Key="DateConverter" />
     </UserControl.Resources>
