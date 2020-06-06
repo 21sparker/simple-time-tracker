@@ -39,7 +39,9 @@ namespace TimeTracker
 
         private void ListViewMenu_SelectionChanged(object sender, RoutedEventArgs e)
         {
-
+            ListView lv = (ListView)sender;
+            ListViewItem item = (ListViewItem)lv.SelectedItem;
+            ((MainWindowViewModel)DataContext).ChangePageByNameCommand.Execute(item.Name);
         }
     }
 }

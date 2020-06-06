@@ -42,11 +42,6 @@
         </EventTrigger>
     </Window.Triggers>
     <Grid>
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>-->
-        
         <materialDesign:ColorZone
             Mode="PrimaryLight" Padding="16" VerticalAlignment="Top" Height="60">
             <Grid>
@@ -58,17 +53,6 @@
                            HorizontalAlignment="Center" Foreground="White" FontSize="24">
                     Time Tracker
                 </TextBlock>
-                <!--<Button Margin="1" Content="Test" Grid.Column="1" Cursor="Hand"
-                        Command="{Binding ChangePageByNameCommand }">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock FontStyle="Italic" Text="{Binding HiddenPageName, StringFormat='Manage {0}'}"/>
-                                <materialDesign:PackIcon Kind="ArrowRight"/>
-                            </StackPanel>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>-->
             </Grid>
         </materialDesign:ColorZone>
         <ContentControl VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="650" Width="680" Content="{Binding CurrentPageViewModel}"/>
@@ -99,19 +83,19 @@
                     <Image Height="80" VerticalAlignment="Bottom"/>
                 </Grid>
                 <ListView x:Name="ListViewMenu" Foreground="#FF5C99D6" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListViewMenu_SelectionChanged">
-                    <ListViewItem x:Name="ItemHome" Height="60">
+                    <ListViewItem x:Name="task" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ViewDashboard" Height="25" Width="25" Margin="10"/>
-                            <TextBlock Text="Tracker" VerticalAlignment="Center" Margin="20 10"/>
+                            <TextBlock Text="Tasks" VerticalAlignment="Center" Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem x:Name="ItemWBS" Height="60">
+                    <ListViewItem x:Name="wbs" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Pencil" Height="25" Width="25" Margin="10"/>
                             <TextBlock Text="WBS" VerticalAlignment="Center" Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem x:Name="ItemSettings" Height="60">
+                    <ListViewItem x:Name="settings" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Cog" Height="25" Width="25" Margin="10"/>
                             <TextBlock Text="Settings" VerticalAlignment="Center" Margin="20 10"/>
@@ -121,6 +105,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-
-
 </Window>

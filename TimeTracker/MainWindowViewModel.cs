@@ -9,6 +9,7 @@ using System.Data.SQLite;
 using System.Threading;
 using System;
 using System.Collections.ObjectModel;
+using Notification.Wpf;
 
 namespace TimeTracker
 {
@@ -23,7 +24,9 @@ namespace TimeTracker
         private ICommand _changePageByNameCommand;
 
         private IPageViewModel _currentPageViewModel;
-        private List<IPageViewModel> _pageViewModels;
+        private Dictionary<string, IPageViewModel> _pageViewModels;
+        //private List<IPageViewModel> _pageViewModels;
+
 
         /// <summary>
         /// Data application EF Core context
@@ -73,18 +76,24 @@ namespace TimeTracker
                 }
             }
 
-
             // Add available pages
-            PageViewModels.Add(new TaskPageViewModel(_DBGateway, taskItems, wbsItems));
-            PageViewModels.Add(new WBSPageViewModel(_DBGateway, wbsItems, taskItems));
+            PageViewModels.Add("task", new TaskPageViewModel(_DBGateway, taskItems, wbsItems));
+            PageViewModels.Add("wbs", new WBSPageViewModel(_DBGateway, wbsItems, taskItems));
 
             // Set starting page
-            CurrentPageViewModel = PageViewModels[0];
-            HiddenPageName = "WBS Codes";
+            CurrentPageViewModel = PageViewModels["task"];
 
+            TimerAsync ta = new TimerAsync();
+            Action<object> printAction = (obj) => printFunc(obj);
+            TimerObject to = new TimerObject(printAction);
+            ta.Subscribe(to);
+            ta.StartTimer();
         }
 
-        
+        private void printFunc(object obj)
+        {
+            Trace.WriteLine((int)obj);
+        }
 
         private string _hiddenPageName;
         public string HiddenPageName
@@ -108,7 +117,8 @@ namespace TimeTracker
                 if (_changePageByNameCommand == null)
                 {
                     _changePageByNameCommand = new RelayCommand(
-                        p => ChangeViewModelByName());
+                        p => ChangeViewModelByName((string)p)
+                        );
                 }
 
                 return _changePageByNameCommand;
@@ -116,36 +126,39 @@ namespace TimeTracker
 
         }
 
-
-        private void ChangeViewModelByName()
+        private void ChangeViewModelByName(string page)
         {
-            if (HiddenPageName == "WBS Codes")
+            NotificationManager _notificationManager = new NotificationManager();
+            NotificationContent content = new NotificationContent
             {
-                CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm.Name == "WBS Codes");
-                HiddenPageName = "Tasks";
-            } else
+                Title = $"You clicked on {page}!",
+                Message = "Thank you for doing that",
+                Type = NotificationType.Information
+            };
+            _notificationManager.Show(content);
+
+            IPageViewModel pageVM;
+
+            if (PageViewModels.TryGetValue(page, out pageVM))
             {
-                CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm.Name == "Tasks");
-                HiddenPageName = "WBS Codes";
+                CurrentPageViewModel = pageVM;
             }
-            
         }
 
 
-        
-
-        public List<IPageViewModel> PageViewModels
+        public Dictionary<string, IPageViewModel> PageViewModels
         {
             get
             {
                 if (_pageViewModels == null)
                 {
-                    _pageViewModels = new List<IPageViewModel>();
+                    _pageViewModels = new Dictionary<string, IPageViewModel>();
                 }
 
                 return _pageViewModels;
             }
         }
+
 
         public IPageViewModel CurrentPageViewModel
         {
@@ -162,40 +175,5 @@ namespace TimeTracker
                 }
             }
         }
-
-
-        // ----------------------------------------------------------------------------------
-        // NOTE THAT THE CODE ABOVE IS MY HACK TO SIMPLY GET THE APP WORKING,
-        // ONCE IT WORKS, MAKE SURE TO TRANSITION TO SOMETHING MORE APPROPRIATE LIKE BELOW
-        //
-        //private ICommand _changePageCommand;
-        //
-        //public ICommand ChangePageCommand
-        //{
-        //    get
-        //    {
-        //        if (_changePageCommand == null)
-        //        {
-        //            _changePageCommand = new RelayCommand(
-        //                p => ChangeViewModel((IPageViewModel)p),
-        //                p => p is IPageViewModel);
-        //        }
-
-        //        return _changePageCommand;
-        //    }
-        //}
-
-        //private void ChangeViewModel(IPageViewModel viewModel)
-        //{
-        //    if (!PageViewModels.Contains(viewModel))
-        //    {
-        //        PageViewModels.Add(viewModel);
-        //    }
-
-        //    CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
-        //}
-        //
-        // -----------------------------------------------------------------------------------------
-
     }
 }

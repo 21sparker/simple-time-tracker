@@ -258,7 +258,8 @@ namespace TimeTracker
             try 
             { 
                 await TrackTaskAsync(); 
-            } catch 
+            } 
+            catch 
             {
                 _trackedTask.AddTrackedTime(_trackedSeconds);
                 _trackedTask.IsTracking = false;
