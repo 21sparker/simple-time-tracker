@@ -138,6 +138,12 @@ namespace TimeTracker
 
         public void DeleteTask(TaskViewModel task)
         {
+            // Ignore delete if task is currently being tracked
+            if (task == _trackedTask)
+            {
+                return;
+            }
+
             // Delete task from database
             _dbGateway.DeleteTask(task.MainTask);
 
