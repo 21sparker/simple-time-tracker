@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,11 @@ namespace TimeTracker
         public WBS WBSItem { get; private set; }
         public string Name
         {
-            get { return WBSItem.Name; }
+            get 
+            {
+                Trace.WriteLine("Name was retrived for " + WBSItem.Name);
+                return WBSItem.Name; 
+            }
             set
             {
                 if (!String.IsNullOrWhiteSpace(value))
