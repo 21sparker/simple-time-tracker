@@ -17,21 +17,15 @@ namespace TimeTracker
         public string Name { get { return "Tasks"; } }
 
         private DatabaseGateway _dbGateway;
+        private TimerAsync _timer;
         public ObservableCollection<TaskViewModel> TaskViewModels { get; set; }
         public ObservableCollection<WBSViewModel> WBSViewModels { get; set; }
 
         public TaskPageViewModel(DatabaseGateway dbGateway, ObservableCollection<TaskViewModel> taskVMs,
-            ObservableCollection<WBSViewModel> wbsVMs)
+            ObservableCollection<WBSViewModel> wbsVMs, TimerAsync timer)
         {
             _dbGateway = dbGateway;
-
-            // Loads active tasks
-            //TaskViewModels = new ObservableCollection<TaskViewModel>();
-            //List<TaskItem> tasks = _dbGateway.TaskItems;
-            //foreach (TaskItem task in tasks)
-            //{
-            //    TaskViewModels.Add(new TaskViewModel(task, _dbGateway));
-            //}
+            _timer = timer;
 
             TaskViewModels = taskVMs;
             WBSViewModels = wbsVMs;
@@ -226,79 +220,51 @@ namespace TimeTracker
             }
         }
 
-        private Task<bool> _pendingTask = null;
-        private CancellationTokenSource _cts = null;
         private int _trackedSeconds = 0;
-
         private TaskViewModel _trackedTask;
+        private ISubscriber _currentSubscriber;
 
-        // TODO: Refactor these async functions
-        public async void TrackTask(TaskViewModel task)
+        private void SetupNewTaskToTrack(TaskViewModel task)
         {
-            // If _trackedTask is not null then the user is stopping the timer
+            _trackedTask = task;
+            _trackedTask.IsTracking = true;
+            IsTracking = true;
+        }
+
+        private void EndTaskBeingTracked()
+        {
+            _trackedTask.AddTrackedTime(_trackedSeconds);
+            _trackedTask.IsTracking = false;
+            _trackedTask = null;
+            _trackedSeconds = 0;
+            IsTracking = false;
+        }
+
+        public void TrackTask(TaskViewModel task)
+        {
             if (_trackedTask != null)
             {
-                // Ignore if clicked task is not what is currently tracked
                 if (_trackedTask != task)
                 {
                     return;
                 }
                 else
                 {
-                    _cts.Cancel();
+                    _timer.Unsubscribe(_currentSubscriber);
+                    EndTaskBeingTracked();
                     return;
                 }
-
             }
 
-            _trackedTask = task;
-            _trackedTask.IsTracking = true;
-            IsTracking = true;
-
-            try 
-            { 
-                await TrackTaskAsync(); 
-            } 
-            catch 
+            SetupNewTaskToTrack(task);
+            Action<object> action = (obj) =>
             {
-                _trackedTask.AddTrackedTime(_trackedSeconds);
-                _trackedTask.IsTracking = false;
-                _trackedTask = null;
-                _trackedSeconds = 0;
-                IsTracking = false;
-            }
-        }
-
-        public async Task<bool> TrackTaskAsync()
-        {
-            CancellationTokenSource previousCts = _cts;
-            _cts = new CancellationTokenSource();
-
-            if (previousCts != null)
-            {
-                // cancel the previous session and wait for its termination
-                previousCts.Cancel();
-                try { await _pendingTask;  } catch { }
-            }
-
-            _cts.Token.ThrowIfCancellationRequested();
-            this._pendingTask = TrackTaskHelper(_cts.Token);
-
-            return await _pendingTask;
-        }
-
-        private async Task<bool> TrackTaskHelper(CancellationToken token)
-        {
-            bool doMore = true;
-            while(doMore)
-            {
-                token.ThrowIfCancellationRequested();
-                await Task.Delay(1000);
-                _trackedSeconds += 1;
                 _trackedTask.SecondsTracked += 1;
-            }
-            return doMore;
-        }
+                _trackedSeconds += 1;
+            };
 
+            _currentSubscriber = new TimerObject(action);
+            _timer.Subscribe(_currentSubscriber);
+        }
     }
 }

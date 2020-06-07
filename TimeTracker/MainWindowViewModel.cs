@@ -76,24 +76,17 @@ namespace TimeTracker
                 }
             }
 
+            TimerAsync ta = new TimerAsync();
+            ta.StartTimer();
+
             // Add available pages
-            PageViewModels.Add("task", new TaskPageViewModel(_DBGateway, taskItems, wbsItems));
+            PageViewModels.Add("task", new TaskPageViewModel(_DBGateway, taskItems, wbsItems, ta));
             PageViewModels.Add("wbs", new WBSPageViewModel(_DBGateway, wbsItems, taskItems));
 
             // Set starting page
             CurrentPageViewModel = PageViewModels["task"];
-
-            TimerAsync ta = new TimerAsync();
-            Action<object> printAction = (obj) => printFunc(obj);
-            TimerObject to = new TimerObject(printAction);
-            ta.Subscribe(to);
-            ta.StartTimer();
         }
 
-        private void printFunc(object obj)
-        {
-            Trace.WriteLine((int)obj);
-        }
 
         private string _hiddenPageName;
         public string HiddenPageName
