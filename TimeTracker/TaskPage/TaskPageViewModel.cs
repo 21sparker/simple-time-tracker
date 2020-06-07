@@ -308,5 +308,52 @@ namespace TimeTracker
             _currentSubscriber = new TimerObject(action);
             _timer.Subscribe(_currentSubscriber);
         }
+
+        private ICommand _writeToCSVCommand;
+        public ICommand WriteToCSVCommand
+        {
+            get
+            {
+                if (_writeToCSVCommand == null)
+                {
+                    _writeToCSVCommand = new RelayCommand(p => WriteToCSV());
+                }
+
+                return _writeToCSVCommand;
+            }
+        }
+
+        private void WriteToCSV()
+        {
+            // Don't write if a task is currently being tracked
+            if (IsTracking)
+            {
+                return;
+            }
+
+            CsvExport myExport = new CsvExport(includeColumnSeparatorDefinitionPreamble: false);
+            string todaysDate = DateTime.Today.ToString("MM/dd");
+            int numRows = 0;
+
+            foreach (TaskViewModel taskVM in TaskViewModels)
+            {
+                TaskItem ti = taskVM.MainTask;
+                if (ti.WBSCode != null)
+                {
+                    myExport.AddRow();
+                    myExport["Date"] = todaysDate;
+                    myExport["WBS Code"] = ti.WBSCode.Code;
+                    myExport["Description"] = ti.Description;
+                    myExport["Hours"] = Math.Round((double)ti.SecondsTracked / 3600, 1);
+                    Trace.WriteLine((double)ti.SecondsTracked);
+                    Trace.WriteLine((double)ti.SecondsTracked / 3600);
+                    Trace.WriteLine(Math.Round((double)ti.SecondsTracked / 3600, 1));
+
+                    numRows += 1;
+                }
+            }
+
+            if (numRows > 0) myExport.ExportToFile("sample.csv");
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace TimeTracker
         {
             MainTask = task;
             _databaseGateway = databaseGateway;
-            _secondsTracked = task.SecondsTracked;
+            //_secondsTracked = task.SecondsTracked;
         }
 
         public TaskItem MainTask { get; private set; }
@@ -33,13 +33,14 @@ namespace TimeTracker
             }
         }
 
-        private long? _secondsTracked;
+        //private long? _secondsTracked;
         public long? SecondsTracked
         {
-            get { return _secondsTracked ?? 0; }
+            get { return MainTask.SecondsTracked ?? 0; }
             set
             {
-                _secondsTracked = value;
+                MainTask.SecondsTracked = value;
+                //_secondsTracked = value;
                 OnPropertyChanged("SecondsTracked");
             }
         }
@@ -71,6 +72,7 @@ namespace TimeTracker
                 {
                     _wbsVM = value;
                     MainTask.WBSId = _wbsVM.WBSItem.WBSId;
+                    MainTask.WBSCode = _wbsVM.WBSItem;
                     _databaseGateway.UpdateTask(MainTask);
                     OnPropertyChanged("WBSVM");
                 }
