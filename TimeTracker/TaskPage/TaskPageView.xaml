@@ -77,20 +77,27 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <materialDesign:DataGridComboBoxColumn Width="150" Header="WBS Code" IsEditable="True"
+                    <materialDesign:DataGridComboBoxColumn Width="150" Header="WBS Code" IsEditable="True"
                                                        SelectedValueBinding="{Binding WBSVM}" DisplayMemberPath="Name"
                                                        ItemsSourceBinding="{
                                                        Binding RelativeSource={RelativeSource FindAncestor, 
                                                        AncestorType={x:Type DataGrid}}, Path=DataContext.WBSViewModels}">
-                    <!--Setting the editing element style allows access to all of the combo box's properties
-                          <materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
-                              <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >
-                                  <Setter Property="IsEditable" Value="True" />
-                              </Style>
-                          </materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
-                          -->
-                </materialDesign:DataGridComboBoxColumn>
-                <DataGridTemplateColumn Width="40">
+                        <!--Setting the editing element style allows access to all of the combo box's properties-->
+                        <materialDesign:DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Setter Property="IsEditable" Value="False"/>
+                            </Style>
+                        </materialDesign:DataGridComboBoxColumn.EditingElementStyle>
+                        <materialDesign:DataGridComboBoxColumn.ElementStyle>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnStyle}}" >
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </materialDesign:DataGridComboBoxColumn.ElementStyle>
+
+                    </materialDesign:DataGridComboBoxColumn>
+                    <DataGridTemplateColumn Width="40">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button ToolTip="Add Time"
@@ -109,25 +116,6 @@
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="Opacity" Value="1"/>
-                                        <!--<Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding Path=DataContext.IsTracking,
-                                                               RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                                               Value="true"/>
-                                                    <Condition Binding="{Binding Path=IsTracking}" Value="false"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Opacity" Value="0.3"/>
-                                            </MultiDataTrigger>
-                                            <DataTrigger Binding="{Binding Path=IsTracking}" Value="true">
-                                                <Setter Property="Content">
-                                                    <Setter.Value>
-                                                        <materialDesign:PackIcon Kind="StopCircleOutline" HorizontalAlignment="Center"
-                                                                 VerticalAlignment="Center"/>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-                                        </Style.Triggers>-->
                                     </Style>
                                 </Button.Style>
                             </Button>
