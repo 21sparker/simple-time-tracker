@@ -1,15 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using System.Data.SqlClient;
-using System.ComponentModel;
-using System.Diagnostics;
-using Dapper;
-using System.Data.SQLite;
-using System.Threading;
-using System;
 using System.Collections.ObjectModel;
-using Notification.Wpf;
+
 
 namespace TimeTracker
 {
@@ -121,15 +114,6 @@ namespace TimeTracker
 
         private void ChangeViewModelByName(string page)
         {
-            NotificationManager _notificationManager = new NotificationManager();
-            NotificationContent content = new NotificationContent
-            {
-                Title = $"You clicked on {page}!",
-                Message = "Thank you for doing that",
-                Type = NotificationType.Information
-            };
-            _notificationManager.Show(content);
-
             IPageViewModel pageVM;
 
             if (PageViewModels.TryGetValue(page, out pageVM))

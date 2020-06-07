@@ -1,12 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Notification.Wpf;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using TimeTracker.TaskPage.DialogBox;
 
@@ -14,10 +11,11 @@ namespace TimeTracker
 {
     public class TaskPageViewModel : ObservableObject, IPageViewModel
     {
-        public string Name { get { return "Tasks"; } }
-
         private DatabaseGateway _dbGateway;
         private TimerAsync _timer;
+        private NotificationManager _notificationManager;
+
+        public string Name { get { return "Tasks"; } }
         public ObservableCollection<TaskViewModel> TaskViewModels { get; set; }
         public ObservableCollection<WBSViewModel> WBSViewModels { get; set; }
 
@@ -27,8 +25,12 @@ namespace TimeTracker
             _dbGateway = dbGateway;
             _timer = timer;
 
+            _notificationManager = new NotificationManager();
+
             TaskViewModels = taskVMs;
             WBSViewModels = wbsVMs;
+
+            StartNotificationTracking();
         }
 
         private string _taskToAdd;
@@ -223,6 +225,7 @@ namespace TimeTracker
         private int _trackedSeconds = 0;
         private TaskViewModel _trackedTask;
         private ISubscriber _currentSubscriber;
+        private ISubscriber _notificationSubscriber;
 
         private void SetupNewTaskToTrack(TaskViewModel task)
         {
@@ -239,6 +242,31 @@ namespace TimeTracker
             _trackedSeconds = 0;
             IsTracking = false;
         }
+        
+        private void SendNotification()
+        {
+            if (_trackedSeconds == 10)
+            {
+                NotificationContent content = new NotificationContent
+                {
+                    Title = "Time Tracker",
+                    Message = "The last 15 minutes have not been tracked",
+                    Type = NotificationType.Notification
+                };
+                _notificationManager.Show(content);
+            }
+        }
+
+        private void StartNotificationTracking()
+        {
+            Action<object> notifyAction = (obj) =>
+            {
+                _trackedSeconds += 1;
+                SendNotification();
+            };
+            _notificationSubscriber = new TimerObject(notifyAction);
+            _timer.Subscribe(_notificationSubscriber);
+        }
 
         public void TrackTask(TaskViewModel task)
         {
@@ -250,11 +278,19 @@ namespace TimeTracker
                 }
                 else
                 {
+                    // Stop task from being tracked
                     _timer.Unsubscribe(_currentSubscriber);
                     EndTaskBeingTracked();
+
+                    // Start background notify task
+                    StartNotificationTracking();
+
                     return;
                 }
             }
+
+            _timer.Unsubscribe(_notificationSubscriber);
+            _trackedSeconds = 0;
 
             SetupNewTaskToTrack(task);
             Action<object> action = (obj) =>
