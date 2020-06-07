@@ -245,7 +245,7 @@ namespace TimeTracker
         
         private void SendNotification()
         {
-            if (_trackedSeconds == 10)
+            if (_trackedSeconds == 60)
             {
                 NotificationContent content = new NotificationContent
                 {

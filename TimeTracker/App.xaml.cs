@@ -27,6 +27,7 @@ namespace TimeTracker
             app.DataContext = context;
             app.Show();
 
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
     }
 }
