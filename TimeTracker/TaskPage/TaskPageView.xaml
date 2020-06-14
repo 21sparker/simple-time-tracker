@@ -80,9 +80,8 @@
                     <materialDesign:DataGridComboBoxColumn Width="150" Header="WBS Code" IsEditable="True"
                                                        ItemsSourceBinding="{
                                                        Binding RelativeSource={RelativeSource FindAncestor, 
-                                                       AncestorType={x:Type DataGrid}}, Path=DataContext.WBSViewModels}"
-                                                       SelectedItemBinding="{Binding WBSVM}"    
-                                                       SelectedValueBinding="{Binding WBSVM}" DisplayMemberPath="Name">
+                                                       AncestorType={x:Type UserControl}}, Path=DataContext.WBSViewModels}"
+                                                       SelectedItemBinding="{Binding WBSVM, Mode=TwoWay}" DisplayMemberPath="Name">
                         <!--Setting the editing element style allows access to all of the combo box's properties-->
                         <materialDesign:DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >

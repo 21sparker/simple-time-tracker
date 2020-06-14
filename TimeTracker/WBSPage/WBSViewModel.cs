@@ -20,9 +20,8 @@ namespace TimeTracker
         public WBS WBSItem { get; private set; }
         public string Name
         {
-            get 
-            {
-                Trace.WriteLine("Name was retrived for " + WBSItem.Name);
+            get
+            { 
                 return WBSItem.Name; 
             }
             set

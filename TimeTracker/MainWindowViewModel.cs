@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
-
+using System.Diagnostics;
 
 namespace TimeTracker
 {
@@ -39,34 +39,30 @@ namespace TimeTracker
             ObservableCollection<TaskViewModel> taskItems = new ObservableCollection<TaskViewModel>();
             ObservableCollection<WBSViewModel> wbsItems = new ObservableCollection<WBSViewModel>();
 
-            // Need to convert each task item to a view model, but its corresponding wbs object needs to be a VM
-            // we'll add wbs VMs to their list as well
+            foreach (WBS wbsItem in _DBGateway.WBSs)
+            {
+                WBSViewModel wbsVM = new WBSViewModel(wbsItem, _DBGateway);
+                wbsItems.Add(wbsVM);
+            }
+
             foreach (TaskItem taskItem in _DBGateway.TaskItems)
             {
                 TaskViewModel taskVM = new TaskViewModel(taskItem, _DBGateway);
 
-                if (taskItem.WBSCode != null)
+                if (taskItem.WBSId != null)
                 {
-                    WBSViewModel wbsVM = new WBSViewModel(taskItem.WBSCode, _DBGateway);
-                    taskVM.WBSVM = wbsVM;
-
-                    if (!wbsItems.Any(w => w.WBSItem.WBSId == wbsVM.WBSItem.WBSId))
+                    foreach(WBSViewModel wbsVM in wbsItems)
                     {
-                        wbsItems.Add(wbsVM);
+                        if (taskItem.WBSId == wbsVM.WBSItem.WBSId)
+                        {
+                            taskVM.WBSVM = wbsVM;
+                            break;
+                        }
                     }
                 }
 
                 taskItems.Add(taskVM);
-            }
 
-            // Add any wbs codes that haven't been added in the previous loop
-            foreach (WBS wbs in _DBGateway.WBSs)
-            {
-                WBSViewModel wbsVM = new WBSViewModel(wbs, _DBGateway);
-                if (!wbsItems.Any(w => w.WBSItem.WBSId == wbsVM.WBSItem.WBSId))
-                {
-                    wbsItems.Add(wbsVM);
-                }
             }
 
             TimerAsync ta = new TimerAsync();

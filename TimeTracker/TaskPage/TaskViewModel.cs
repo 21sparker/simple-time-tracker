@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ namespace TimeTracker
         {
             MainTask = task;
             _databaseGateway = databaseGateway;
-            //_secondsTracked = task.SecondsTracked;
         }
 
         public TaskItem MainTask { get; private set; }
@@ -33,14 +33,12 @@ namespace TimeTracker
             }
         }
 
-        //private long? _secondsTracked;
         public long? SecondsTracked
         {
             get { return MainTask.SecondsTracked ?? 0; }
             set
             {
                 MainTask.SecondsTracked = value;
-                //_secondsTracked = value;
                 OnPropertyChanged("SecondsTracked");
             }
         }
@@ -68,7 +66,7 @@ namespace TimeTracker
             get { return _wbsVM; }
             set
             {
-                if (value != null)
+                if (value != null & value != _wbsVM)
                 {
                     _wbsVM = value;
                     MainTask.WBSId = _wbsVM.WBSItem.WBSId;

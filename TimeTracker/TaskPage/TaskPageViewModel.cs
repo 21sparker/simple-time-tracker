@@ -27,8 +27,8 @@ namespace TimeTracker
 
             _notificationManager = new NotificationManager();
 
-            TaskViewModels = taskVMs;
             WBSViewModels = wbsVMs;
+            TaskViewModels = taskVMs;
 
             StartNotificationTracking();
         }
@@ -40,7 +40,6 @@ namespace TimeTracker
             set
             {
                 _taskToAdd = value;
-                Trace.WriteLine(value);
                 OnPropertyChanged("TaskToAdd");
             }
         }
@@ -51,7 +50,6 @@ namespace TimeTracker
             get { return _isTaskToAddFocused; }
             set
             {
-                Trace.WriteLine("Setting value" + value);
                 if(_isTaskToAddFocused == value)
                 {
                     _isTaskToAddFocused = false;
@@ -345,9 +343,6 @@ namespace TimeTracker
                     myExport["WBS Code"] = ti.WBSCode.Code;
                     myExport["Description"] = ti.Description;
                     myExport["Hours"] = Math.Round((double)ti.SecondsTracked / 3600, 1);
-                    Trace.WriteLine((double)ti.SecondsTracked);
-                    Trace.WriteLine((double)ti.SecondsTracked / 3600);
-                    Trace.WriteLine(Math.Round((double)ti.SecondsTracked / 3600, 1));
 
                     numRows += 1;
                 }
