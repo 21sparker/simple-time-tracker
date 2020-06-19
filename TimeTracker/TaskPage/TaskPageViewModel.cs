@@ -2,7 +2,6 @@
 using Notification.Wpf;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using TimeTracker.TaskPage.DialogBox;
@@ -249,7 +248,7 @@ namespace TimeTracker
         
         private void SendNotification()
         {
-            if (_trackedSeconds == 60)
+            if (_trackedSeconds == 10)
             {
                 NotificationContent content = new NotificationContent
                 {
