@@ -11,7 +11,7 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="750">
+        Title="MainWindow" Height="800" Width="1100">
     <Window.Resources>
         <DataTemplate DataType="{x:Type local:TaskPageViewModel}">
             <local:TaskPageView/>
@@ -42,9 +42,9 @@
         </EventTrigger>
     </Window.Triggers>
     <Grid>
-        <materialDesign:ColorZone
-            Mode="PrimaryLight" Padding="16" VerticalAlignment="Top" Height="60">
-            <Grid>
+        <!--<materialDesign:ColorZone
+            Mode="PrimaryLight" VerticalAlignment="Top" Height="50" Margin="0 0 0 100">
+            --><!--<Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -53,9 +53,9 @@
                            HorizontalAlignment="Center" Foreground="White" FontSize="24">
                     Time Tracker
                 </TextBlock>
-            </Grid>
-        </materialDesign:ColorZone>
-        <ContentControl VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="650" Width="680" Content="{Binding CurrentPageViewModel}"/>
+            </Grid>--><!--
+        </materialDesign:ColorZone>-->
+        <ContentControl VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="800" Width="1020" Content="{Binding CurrentPageViewModel}"/>
         <Grid x:Name="GridMenu" Width="70" HorizontalAlignment="Left" Background="#757de8">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="1" Color="#FFAEAEAE"/>
