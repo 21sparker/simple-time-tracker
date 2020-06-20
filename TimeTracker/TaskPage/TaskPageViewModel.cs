@@ -3,6 +3,7 @@ using Notification.Wpf;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -42,16 +43,12 @@ namespace TimeTracker
 
         private bool TaskDateFilter(object item)
         {
-            return ((TaskViewModel)item).CreatedDateTime == TrackingDate;
+            Trace.WriteLine(((TaskViewModel)item).CreatedDateTime.Date);
+            Trace.WriteLine(TrackingDate.Date);
+            Trace.WriteLine(((TaskViewModel)item).CreatedDateTime.Date == TrackingDate.Date);
+            return ((TaskViewModel)item).CreatedDateTime.Date == TrackingDate.Date;
         }
 
-        public ObservableCollection<TaskViewModel> TrackedDateTaskViewModels
-        {
-            get
-            {
-                return (ObservableCollection<TaskViewModel>)TaskViewModels.Where<TaskViewModel>(t => { return t.CreatedDateTime == TrackingDate; });
-            }
-        }
 
         private DateTime _trackingDate;
         public DateTime TrackingDate
@@ -132,10 +129,9 @@ namespace TimeTracker
                 return;
             }
 
-            // TODO: Check for field that is just full of spaces
-
             //TaskItemDescription is not already uses, case-insensitive
-            if (TaskViewModels.Any(t => t.Description.Equals(taskDescription, StringComparison.CurrentCultureIgnoreCase)))
+            if (TaskViewModels.Any(t => t.Description.Equals(taskDescription, StringComparison.CurrentCultureIgnoreCase)
+                                    && t.CreatedDateTime.Date == TrackingDate.Date))
             {
                 return;
             }
@@ -145,9 +141,6 @@ namespace TimeTracker
 
             // Update collection
             TaskViewModels.Add(new TaskViewModel(newTask, _dbGateway));
-
-            // Refresh display data
-            OnPropertyChanged("TrackedDateTaskViewModels");
 
             // Clear user input
             TaskToAdd = "";
