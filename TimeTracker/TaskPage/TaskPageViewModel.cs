@@ -23,13 +23,26 @@ namespace TimeTracker
         {
             _dbGateway = dbGateway;
             _timer = timer;
-
             _notificationManager = new NotificationManager();
+
+            // Default tracking date is today
+            TrackingDate = DateTime.Now;
 
             WBSViewModels = wbsVMs;
             TaskViewModels = taskVMs;
 
             StartNotificationTracking();
+        }
+
+        private DateTime _trackingDate;
+        public DateTime TrackingDate
+        {
+            get { return _trackingDate; }
+            set
+            {
+                _trackingDate = value;
+                OnPropertyChanged("TrackingDate");
+            }
         }
 
         private string _taskToAdd;
