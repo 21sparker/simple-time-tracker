@@ -7,9 +7,6 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="710" d:DesignWidth="1020">
-    <UserControl.Resources>
-        <local:DateConverter x:Key="DateConverter" />
-    </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding FocusTaskToAdd}" />
     </UserControl.InputBindings>
