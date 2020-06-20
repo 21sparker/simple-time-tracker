@@ -85,6 +85,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\CsvExport.cs" />
     <Compile Include="FocusExtension\FocusExtension.cs" />
+    <Compile Include="Helpers\DateConverter.cs" />
     <Compile Include="Helpers\TimeDurationConverter.cs" />
     <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Models\WBS.cs" />
