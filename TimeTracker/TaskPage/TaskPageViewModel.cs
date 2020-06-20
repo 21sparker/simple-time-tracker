@@ -2,7 +2,9 @@
 using Notification.Wpf;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 using TimeTracker.TaskPage.DialogBox;
 
@@ -17,6 +19,7 @@ namespace TimeTracker
         public string Name { get { return "Tasks"; } }
         public ObservableCollection<TaskViewModel> TaskViewModels { get; set; }
         public ObservableCollection<WBSViewModel> WBSViewModels { get; set; }
+        public CollectionView TaskViewModelsView { get; set; }
 
         public TaskPageViewModel(DatabaseGateway dbGateway, ObservableCollection<TaskViewModel> taskVMs,
             ObservableCollection<WBSViewModel> wbsVMs, TimerAsync timer)
@@ -26,12 +29,28 @@ namespace TimeTracker
             _notificationManager = new NotificationManager();
 
             // Default tracking date is today
-            TrackingDate = DateTime.Now;
+            TrackingDate = DateTime.UtcNow;
 
             WBSViewModels = wbsVMs;
             TaskViewModels = taskVMs;
 
+            TaskViewModelsView = (CollectionView)CollectionViewSource.GetDefaultView(TaskViewModels);
+            TaskViewModelsView.Filter = TaskDateFilter;
+
             StartNotificationTracking();
+        }
+
+        private bool TaskDateFilter(object item)
+        {
+            return ((TaskViewModel)item).CreatedDateTime == TrackingDate;
+        }
+
+        public ObservableCollection<TaskViewModel> TrackedDateTaskViewModels
+        {
+            get
+            {
+                return (ObservableCollection<TaskViewModel>)TaskViewModels.Where<TaskViewModel>(t => { return t.CreatedDateTime == TrackingDate; });
+            }
         }
 
         private DateTime _trackingDate;
@@ -122,10 +141,13 @@ namespace TimeTracker
             }
 
             // Insert new task to database
-           TaskItem newTask = _dbGateway.InsertNewTask(taskDescription, Utilities.ConvertToUnixTime(DateTime.Now));
+           TaskItem newTask = _dbGateway.InsertNewTask(taskDescription, Utilities.ConvertToUnixTime(TrackingDate));
 
             // Update collection
             TaskViewModels.Add(new TaskViewModel(newTask, _dbGateway));
+
+            // Refresh display data
+            OnPropertyChanged("TrackedDateTaskViewModels");
 
             // Clear user input
             TaskToAdd = "";

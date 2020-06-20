@@ -13,5 +13,10 @@ namespace TimeTracker
             DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return (long)(dateTime - sTime).TotalSeconds;
         }
+
+        public static DateTime ConvertUnixSecondsToDateTime(long seconds)
+        {
+            return (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).AddSeconds(seconds);
+        }
     }
 }

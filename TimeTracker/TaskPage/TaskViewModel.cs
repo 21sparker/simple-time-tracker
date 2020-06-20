@@ -38,6 +38,11 @@ namespace TimeTracker
             }
         }
 
+        public DateTime CreatedDateTime
+        {
+            get { return Utilities.ConvertUnixSecondsToDateTime(MainTask.CreatedDateTime); }
+        }
+
         private bool _isTracking;
         public bool IsTracking
         {
