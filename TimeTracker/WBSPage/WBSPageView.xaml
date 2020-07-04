@@ -10,7 +10,7 @@
     <UserControl.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding FocusTaskToAdd}" />
     </UserControl.InputBindings>
-    <Grid>
+    <Grid Height="710">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
