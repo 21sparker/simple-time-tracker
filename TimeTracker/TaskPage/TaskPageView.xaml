@@ -22,8 +22,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="0">
+
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
@@ -31,13 +31,15 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="1">
+                <Button Grid.Column="1"
+                        Command="{Binding MoveBackTrackingDate}">
                     <materialDesign:PackIcon Kind="ChevronLeft"/>
                 </Button>
                 <Button Grid.Column="2">
                     <materialDesign:PackIcon Kind="CalendarRange"/>
                 </Button>
-                <Button Grid.Column="3">
+                <Button Grid.Column="3"
+                        Command="{Binding MoveForwardTrackingDate}">
                     <materialDesign:PackIcon Kind="ChevronRight"/>
                 </Button>
         </Grid>

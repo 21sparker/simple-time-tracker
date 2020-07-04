@@ -39,16 +39,14 @@ namespace TimeTracker
             TaskViewModelsView.Filter = TaskDateFilter;
 
             StartNotificationTracking();
+
+            
         }
 
         private bool TaskDateFilter(object item)
         {
-            Trace.WriteLine(((TaskViewModel)item).CreatedDateTime.Date);
-            Trace.WriteLine(TrackingDate.Date);
-            Trace.WriteLine(((TaskViewModel)item).CreatedDateTime.Date == TrackingDate.Date);
             return ((TaskViewModel)item).CreatedDateTime.Date == TrackingDate.Date;
         }
-
 
         private DateTime _trackingDate;
         public DateTime TrackingDate
@@ -376,6 +374,41 @@ namespace TimeTracker
             }
 
             if (numRows > 0) myExport.ExportToFile("sample.csv");
+        }
+
+
+        private ICommand _moveBackTrackingDate;
+        public ICommand MoveBackTrackingDate
+        {
+            get
+            {
+                if (_moveBackTrackingDate == null)
+                {
+                    _moveBackTrackingDate = new RelayCommand(p => ChangeDisplayDate(-1));
+                }
+
+                return _moveBackTrackingDate;
+            }
+        }
+
+        private ICommand _moveForwardTrackingDate;
+        public ICommand MoveForwardTrackingDate
+        {
+            get
+            {
+                if (_moveForwardTrackingDate == null)
+                {
+                    _moveForwardTrackingDate = new RelayCommand(p => ChangeDisplayDate(1));
+                }
+
+                return _moveForwardTrackingDate;
+            }
+        }
+
+        private void ChangeDisplayDate(int daysToAdd)
+        {
+            TrackingDate = TrackingDate.AddDays(daysToAdd);
+            TaskViewModelsView.Refresh();
         }
     }
 }
