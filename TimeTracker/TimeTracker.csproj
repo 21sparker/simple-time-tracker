@@ -89,6 +89,10 @@
     <Compile Include="Helpers\TimeDurationConverter.cs" />
     <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Models\WBS.cs" />
+    <Compile Include="TaskPage\DialogBox\CalendarView.xaml.cs">
+      <DependentUpon>CalendarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TaskPage\DialogBox\CalendarViewModel.cs" />
     <Compile Include="TaskPage\DialogBox\TimeDialogView.xaml.cs">
       <DependentUpon>TimeDialogView.xaml</DependentUpon>
     </Compile>
@@ -120,6 +124,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TaskPage\DialogBox\CalendarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TaskPage\DialogBox\TimeDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

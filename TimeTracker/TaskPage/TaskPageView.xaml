@@ -35,7 +35,7 @@
                         Command="{Binding MoveBackTrackingDate}">
                     <materialDesign:PackIcon Kind="ChevronLeft"/>
                 </Button>
-                <Button Grid.Column="2">
+                <Button Command="{Binding Path=ExecuteCalendarDialogCommand}" Grid.Column="2" >
                     <materialDesign:PackIcon Kind="CalendarRange"/>
                 </Button>
                 <Button Grid.Column="3"

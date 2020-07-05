@@ -174,6 +174,42 @@ namespace TimeTracker
             TaskViewModels.Remove(task);
         }
 
+        private ICommand _executeCalendarDialogCommand;
+        public ICommand ExecuteCalendarDialogCommand
+        {
+            get
+            {
+                if (_executeCalendarDialogCommand == null)
+                {
+                    _executeCalendarDialogCommand = new RelayCommand(c => ExecuteCalendarDialog());
+                }
+
+                return _executeCalendarDialogCommand;
+            }
+        }
+
+        private async void ExecuteCalendarDialog()
+        {
+            CalendarView view = new CalendarView
+            {
+                DataContext = new CalendarViewModel()
+            };
+
+            ((CalendarViewModel)view.DataContext).SelectedDate = TrackingDate;
+
+            // show the dialog
+            var result = await DialogHost.Show(view, "RootDialog");
+
+            bool selectedOk = (bool)result;
+
+            if (selectedOk)
+            {
+                TrackingDate = ((CalendarViewModel)view.DataContext).SelectedDate;
+                TaskViewModelsView.Refresh();
+            }
+
+        }
+
 
         private ICommand _executeTimeDialogCommand;
         public ICommand ExecuteTimeDialogCommand
@@ -363,13 +399,17 @@ namespace TimeTracker
                 TaskItem ti = taskVM.MainTask;
                 if (ti.WBSCode != null)
                 {
-                    myExport.AddRow();
-                    myExport["Date"] = todaysDate;
-                    myExport["WBS Code"] = ti.WBSCode.Code;
-                    myExport["Description"] = ti.Description;
-                    myExport["Hours"] = Math.Round((double)ti.SecondsTracked / 3600, 1);
+                    if (ti.SecondsTracked != null)
+                    {
+                        myExport.AddRow();
+                        myExport["Date"] = todaysDate;
+                        myExport["WBS Code"] = ti.WBSCode.Code;
+                        myExport["Description"] = ti.Description;
+                        myExport["Hours"] = Math.Round((double)ti.SecondsTracked / 3600, 1);
 
-                    numRows += 1;
+                        numRows += 1;
+                    }
+
                 }
             }
 
