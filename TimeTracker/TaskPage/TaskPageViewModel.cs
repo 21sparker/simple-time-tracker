@@ -387,14 +387,17 @@ namespace TimeTracker
             // Don't write if a task is currently being tracked
             if (IsTracking)
             {
+                Trace.WriteLine("Currently tracking: " + IsTracking.ToString());
                 return;
             }
 
             CsvExport myExport = new CsvExport(includeColumnSeparatorDefinitionPreamble: false);
-            string todaysDate = DateTime.Today.ToString("MM/dd");
+            string writeDate = TrackingDate.ToString("MM/dd");
             int numRows = 0;
 
-            foreach (TaskViewModel taskVM in TaskViewModels)
+
+
+            foreach (TaskViewModel taskVM in TaskViewModelsView)
             {
                 TaskItem ti = taskVM.MainTask;
                 if (ti.WBSCode != null)
@@ -402,10 +405,11 @@ namespace TimeTracker
                     if (ti.SecondsTracked != null)
                     {
                         myExport.AddRow();
-                        myExport["Date"] = todaysDate;
+                        myExport["Date"] = writeDate;
                         myExport["WBS Code"] = ti.WBSCode.Code;
                         myExport["Description"] = ti.Description;
                         myExport["Hours"] = Math.Round((double)ti.SecondsTracked / 3600, 1);
+                        myExport["Tax Area"] = "110";
 
                         numRows += 1;
                     }
@@ -413,7 +417,7 @@ namespace TimeTracker
                 }
             }
 
-            if (numRows > 0) myExport.ExportToFile("sample.csv");
+            if (numRows > 0) myExport.ExportToFile("extract.csv");
         }
 
 
