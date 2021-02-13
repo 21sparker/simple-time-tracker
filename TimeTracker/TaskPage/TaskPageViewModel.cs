@@ -38,6 +38,8 @@ namespace TimeTracker
             TaskViewModelsView = (CollectionView)CollectionViewSource.GetDefaultView(TaskViewModels);
             TaskViewModelsView.Filter = TaskDateFilter;
 
+            UpdateTotalTime();
+
             StartNotificationTracking();
 
             
@@ -206,6 +208,7 @@ namespace TimeTracker
             {
                 TrackingDate = ((CalendarViewModel)view.DataContext).SelectedDate;
                 TaskViewModelsView.Refresh();
+                UpdateTotalTime();
             }
 
         }
@@ -453,6 +456,31 @@ namespace TimeTracker
         {
             TrackingDate = TrackingDate.AddDays(daysToAdd);
             TaskViewModelsView.Refresh();
+            UpdateTotalTime();
         }
+
+        private void UpdateTotalTime()
+        {
+            long? totalSeconds = 0;
+            foreach (TaskViewModel taskVM in TaskViewModelsView){
+                totalSeconds += taskVM.SecondsTracked;
+            }
+
+            TimeSpan ts = TimeSpan.FromSeconds((double)totalSeconds);
+            TotalTime = ts.ToString(@"hh\:mm");
+
+        }
+
+        private string _totalTime = "00:00";
+        public string TotalTime
+        {
+            get { return _totalTime; }
+            set
+            {
+                _totalTime = value;
+                OnPropertyChanged("TotalTime");
+            }
+        }
+
     }
 }
